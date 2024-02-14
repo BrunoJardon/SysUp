@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Check if running as root
+if [ "$(id -u)" != "0" ]; then
+    echo -e "[\033[1;31m\033[1m!\033[0m] Run as root user." >&2
+    exit 1
+fi
+
+# Colors and decorations
+green='\033[0;32m'
+blue='\033[1;34m'
+bold='\033[1m'
+reset='\033[0m'
+
+# Update repository list
+echo -e "[${green}+${reset}] ${blue}${bold}Updating repository list...${reset}"
+aptitude update
+
+# Upgrade packages
+echo -e "[${green}+${reset}] ${blue}${bold}Upgrading packages...${reset}"
+aptitude upgrade -y
+
+# Upgrade distribution packages
+echo -e "[${green}+${reset}] ${blue}${bold}Upgrading distribution packages...${reset}"
+aptitude dist-upgrade -y
+
+# Upgrade packages with held dependencies
+echo -e "[${green}+${reset}] ${blue}${bold}Upgrading packages with held dependencies...${reset}"
+aptitude full-upgrade -y
+
+# Remove obsolete packages
+echo -e "[${green}+${reset}] ${blue}${bold}Removing obsolete packages...${reset}"
+apt-get autoremove -y
+echo ""
+
+# Clean package cache
+echo -e "[${green}+${reset}] ${blue}${bold}Cleaning package and apt cache...${reset}"
+aptitude autoclean
+apt-get clean
+echo ""
+
+echo -e "[${green}+${reset}] ${green}${bold}Update complete!${reset}"
