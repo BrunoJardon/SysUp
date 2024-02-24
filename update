@@ -6,27 +6,41 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-# Colors and decorations
+# Select aptitude as package manager if installed
+if command -v aptitude >/dev/null 2>&1; then
+    pm="aptitude"
+elif command -v apt >/dev/null 2>&1; then
+    pm="apt"
+else
+    echo -e "[\033[1;31m\033[1m!\033[0m] That script was created to use with apt or aptitude on Debian base distros."
+    exit 1
+fi
+
+# Colors
 green='\033[0;32m'
 blue='\033[1;34m'
-bold='\033[1m'
 reset='\033[0m'
+bold='\033[1m'
 
 # Update repository list
 echo -e "[${green}+${reset}] ${blue}${bold}Updating repository list...${reset}"
-aptitude update
+${pm} update
+echo ""
 
 # Upgrade packages
 echo -e "[${green}+${reset}] ${blue}${bold}Upgrading packages...${reset}"
-aptitude upgrade -y
+${pm} upgrade -y
+echo ""
 
 # Upgrade distribution packages
 echo -e "[${green}+${reset}] ${blue}${bold}Upgrading distribution packages...${reset}"
-aptitude dist-upgrade -y
+${pm} dist-upgrade -y
+echo ""
 
 # Upgrade packages with held dependencies
 echo -e "[${green}+${reset}] ${blue}${bold}Upgrading packages with held dependencies...${reset}"
-aptitude full-upgrade -y
+${pm} full-upgrade -y
+echo ""
 
 # Remove obsolete packages
 echo -e "[${green}+${reset}] ${blue}${bold}Removing obsolete packages...${reset}"
@@ -35,8 +49,19 @@ echo ""
 
 # Clean package cache
 echo -e "[${green}+${reset}] ${blue}${bold}Cleaning package and apt cache...${reset}"
-aptitude autoclean
+${pm} autoclean
 apt-get clean
 echo ""
 
-echo -e "[${green}+${reset}] ${green}${bold}Update complete!${reset}"
+echo -e "[${green}+${reset}] ${green}${bold}Upgrade complete!${reset}"
+
+# Prompt to reboot if necessary
+if [ -f /var/run/reboot-required ]; then
+    echo ""
+    echo -e "\n[${green}+${reset}] ${bold}${blue}System reboot required.${reset}"
+    read -p "Do you want to reboot now? [Y/N]: " choice
+    case "$choice" in
+        y|Y ) reboot;;
+        * ) echo "You can reboot later using 'sudo reboot'.";;
+    esac
+fi
