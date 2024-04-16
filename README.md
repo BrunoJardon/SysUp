@@ -1,3 +1,4 @@
+![Preview]()
 # Debian Upgrader
 Simple script básico para actualizar los sistemas Linux basados en Debian.
 
