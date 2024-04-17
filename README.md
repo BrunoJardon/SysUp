@@ -1,4 +1,4 @@
-![Preview](https://raw.githubusercontent.com/brunojardon/DebianUpgrader/main/DebianUpgrader.webp)
+![Preview](https://raw.githubusercontent.com/brunojardon/DebianUpgrader/main/preview.webp)
 # Debian Upgrader
 Simple script básico para actualizar los sistemas Linux basados en Debian.
 
