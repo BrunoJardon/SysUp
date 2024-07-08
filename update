@@ -36,7 +36,7 @@ ${pm} dist-upgrade -y
 echo ""
 
 # Upgrade packages with held dependencies
-echo -e "[${green}+${reset}] ${blue}${bold}Upgrading packages with held dependencies...${reset}"
+echo -e "[${green}+${reset}] ${blue}${bold}Upgrading system packages...${reset}"
 ${pm} full-upgrade -y
 echo ""
 
