@@ -6,13 +6,11 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-# Select aptitude as package manager if installed
-if command -v aptitude >/dev/null 2>&1; then
-    pm="aptitude"
-elif command -v apt >/dev/null 2>&1; then
+# Check if apt is installed
+if command -v apt >/dev/null 2>&1; then
     pm="apt"
 else
-    echo -e "[\033[1;31m\033[1m!\033[0m] That script was created to use with apt or aptitude on Debian base distros."
+    echo -e "[\033[1;31m\033[1m!\033[0m] That script was created to use with apt on Debian base distros."
     exit 1
 fi
 
@@ -44,7 +42,7 @@ echo ""
 
 # Remove obsolete packages
 echo -e "[${green}+${reset}] ${blue}${bold}Removing obsolete packages...${reset}"
-apt-get autoremove -y
+${pm} autoremove -y
 echo ""
 
 # Clean package cache
@@ -62,6 +60,6 @@ if [ -f /var/run/reboot-required ]; then
     read -p "Do you want to reboot now? [Y/N]: " choice
     case "$choice" in
         y|Y ) reboot;;
-        * ) echo "You can reboot later using 'sudo reboot'.";;
+        * ) echo -e "[${green}+${reset}] You can reboot later using 'sudo reboot'.";;
     esac
 fi
