@@ -1,23 +1,38 @@
-![Preview](https://raw.githubusercontent.com/brunojardon/DebianUpgrader/main/preview.webp)
-# Debian Upgrader
+![Preview](https://raw.githubusercontent.com/brunojardon/SysUp/main/preview.webp)
+<h1 align="center">SysUp</h1>
 Simple script básico para actualizar los sistemas Linux basados en Debian usando el administrador de paquetes APT.
 
-## Instalación
-* Si quieres usar el script como un comando del sistema, puedes mover el script a `/usr/local/bin` u otro directorio que esté en el PATH (`echo $PATH`).
-* Asegúrate de que el script tenga los permisos de ejecución y nada más.
-* Opcionalmente puedes instalar aptitude, el script utilizará una combinacion de apt y aptitude.
+<h2>Instalación</h2>
+
+1. Clona el repositorio.
+2. Dentro del directorio, mueve el archivo update a `/usr/local/bin/`.
+3. Reinicia la terminal.
 
 ```bash
-sudo apt install -y aptitude
+git clone --depth=1 https://github.com/BrunoJardon/SysUp.git
+cd ./SysUp/
+sudo mv ./update /usr/local/bin/
 ```
 
-## Uso
-Con el script en `/usr/local/bin` (o algún lugar del PATH) puedes ejecutar
+<h2>Funcionamiento</h2>
+El script se debe ejecutar como usuario root usando.
+
 ```bash
 sudo update
 ```
-Si no, usa `sudo ./update` estando ubicado en la carpeta del script.
 
-## Licencia
+Esto ejecutara
 
+~~~
+apt update            # Actualiza los repositorios
+apt upgrade -y        # Actualiza los programas basicos
+apt dist-upgrade -y   # Actualiza la distribucion
+apt full-upgrade -y   # Actualiza el sistema y desinstala los paquetes no requeridos
+apt autoremove -y     # Para asegurar
+apt clean             # Borra la cache (/var/cache/apt/archives/)
+~~~
+
+Tambien revisara si es necesario reiniciar la computadora
+
+<h2>Licencia</h2>
 [MIT](https://choosealicense.com/licenses/mit/)
